@@ -134,8 +134,13 @@ const Login = () => {
             Forgot Password?
           </p>
         </div>
+        <p className="text-center  bg-yellow-400">Admin credentials :
+        EMAIL ADDRESS:admin@gmail.com
+        PASSWORD:admin
+      </p>
       </div>
       <ToastContainer />
+  
     </>
   );
 };
