@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
+import Shimmer from "./Shimmer";
 
 const Body = ({getuserCart}) => {
   const [products, setProducts] = useState([]);
@@ -7,6 +8,7 @@ const Body = ({getuserCart}) => {
   const [search, setSearch] = useState("");
   const [sortByPrice, setSortByPrice] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
+  const [loading,setLoading] =useState(false);
 
   const handleSearch = () => {
     if (search) {
@@ -53,8 +55,9 @@ const Body = ({getuserCart}) => {
   };
 
   const allproducts = async function () {
+    setLoading(true);
     let token= localStorage.getItem('shoppingtoken');
-    const data = await fetch("http://localhost:8000/allproducts", {
+    const data = await fetch("https://shopping-backend-vsg9.onrender.com/allproducts", {
       method: "GET",
       headers: {
         "Access-Control-Allow-Origin": true,
@@ -65,9 +68,11 @@ const Body = ({getuserCart}) => {
     const res = await data.json();
     // console.log(res.products);
     if (data.status === 200) {
+      setLoading(false);
       setProducts(res.products);
       setFproducts(res.products);
     } else {
+      setLoading(false);
       console.log(res.error);
     }
   };
@@ -153,7 +158,9 @@ const Body = ({getuserCart}) => {
           🔃
         </button>
       </div>
+     
       <div className="flex flex-wrap justify-center items-center ">
+      {loading &&<Shimmer/>}
         {fproducts?.map((product) => (
           <Card product={product} getuserCart={getuserCart}/>
         ))}

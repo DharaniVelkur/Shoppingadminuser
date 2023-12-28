@@ -3,6 +3,7 @@ import Body from './Body';
 import Header from './Header';
 import { Route, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import Shimmer from './Shimmer';
 
 
 const Home = () => {
@@ -10,7 +11,7 @@ const Home = () => {
   const [count,setCount] =useState(0);
   const validuser = async ()=>{
     let token = localStorage.getItem('shoppingtoken');
-    const res= await fetch("http://localhost:8000/validuser",{
+    const res= await fetch("https://shopping-backend-vsg9.onrender.com/validuser",{
         method:"GET",
         headers:{
             "Access-Control-Allow-Origin":true,
@@ -32,7 +33,7 @@ const Home = () => {
 
 const getuserCart =async ()=>{
   let token = localStorage.getItem('shoppingtoken');
-  const data = await fetch("http://localhost:8000/getuserCart",{
+  const data = await fetch("https://shopping-backend-vsg9.onrender.com/getuserCart",{
     method:"GET",
     headers:{
       'Access-Control-Allow-Origin':true,
@@ -55,6 +56,7 @@ useEffect(()=>{
   <>
   <Header count={count}/>
   <Body getuserCart={getuserCart}/>
+ 
   <ToastContainer/>
   </>
   )

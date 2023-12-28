@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AdminBody from './AdminBody';
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 const AdminHome = () => {
+
   let navigate = useNavigate();
   const handleSignout =async() =>{
     let token = localStorage.getItem('shoppingtoken');
-    const data = await fetch('http://localhost:8000/logout',{
+    const data = await fetch('https://shopping-backend-vsg9.onrender.com/logout',{
       method:"GET",
       headers:{
         'Access-Control-Allow-Origin':true,

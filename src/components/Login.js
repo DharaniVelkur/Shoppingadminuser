@@ -4,7 +4,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
-import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +14,7 @@ const Login = () => {
   const loginUser = async (e) => {
     e.preventDefault();
     setSpin(true);
-    const data = await fetch("http://localhost:8000/login", {
+    const data = await fetch("https://shopping-backend-vsg9.onrender.com/login", {
       method: "POST",
       headers: {
         "Access-Control-Allow-Origin": true,
@@ -55,7 +54,7 @@ const Login = () => {
     
   const validuser = async ()=>{
     let token = localStorage.getItem('shoppingtoken');
-    const res= await fetch("http://localhost:8000/validuser",{
+    const res= await fetch("https://shopping-backend-vsg9.onrender.com/validuser",{
         method:"GET",
         headers:{
             "Access-Control-Allow-Origin":true,

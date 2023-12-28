@@ -1,8 +1,10 @@
+import { CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import Modal from "react-modal";
 import { toast } from "react-toastify";
 
 const AdminCard = ({ product, allproducts }) => {
+  const [spin,setSpin] =useState(false);
   const stripHtmlTags = (htmlString) => {
     const doc = new DOMParser().parseFromString(htmlString, "text/html");
     return doc.body.textContent || "";
@@ -37,8 +39,9 @@ const AdminCard = ({ product, allproducts }) => {
   }
 
   const handleUpdate = async (id) => {
+    setSpin(true);
     let token = localStorage.getItem('shoppingtoken');
-    const data = await fetch(`http://localhost:8000/updateproduct/${id}`, {
+    const data = await fetch(`https://shopping-backend-vsg9.onrender.com/updateproduct/${id}`, {
       method: "PUT",
       headers: {
         "Access-Control-Allow-Origin": true,
@@ -56,17 +59,20 @@ const AdminCard = ({ product, allproducts }) => {
     });
     const res = await data.json();
     if (data.status === 200) {
+      setSpin(false)
       toast.success("Updated successfully!!");
       allproducts();
       closeModal();
     } else {
+      setSpin(false)
       toast.error(res.error);
     }
   };
 
   const handleDelete = async (id) => {
+    setSpin(true);
     let token = localStorage.getItem('shoppingtoken')
-    const data = await fetch(`http://localhost:8000/deleteproduct/${id}`, {
+    const data = await fetch(`https://shopping-backend-vsg9.onrender.com/deleteproduct/${id}`, {
       method: "DELETE",
       headers: {
         "Access-Control-Allow-Origin": true,
@@ -76,10 +82,11 @@ const AdminCard = ({ product, allproducts }) => {
     });
     const res = await data.json();
     if (data.status === 200) {
+      setSpin(false)
       toast.success("Deleted successfully!!");
       allproducts();
     } else {
-      
+      setSpin(false);
       toast.error(res.error);
     }
   };
@@ -97,12 +104,21 @@ const AdminCard = ({ product, allproducts }) => {
             <p className="cursor-pointer px-2" onClick={openModal}>
               <i className="fa-regular fa-pen-to-square"></i>
             </p>
-            <p
+
+            {spin ? (
+          <button>
+            <CircularProgress size="1.2rem" />
+          </button>
+        ) : (
+          <p
               className="px-2 cursor-pointer"
               onClick={() => handleDelete(product._id)}
             >
               <i className="fa-solid fa-trash"></i>
             </p>
+        )}
+
+           
           </div>
         </div>
         <img src={product.image} className="w-1/2 h-56 m-auto" alt="item" />
@@ -168,12 +184,19 @@ const AdminCard = ({ product, allproducts }) => {
           />
           <br />
         </form>
-        <button
+        {spin ? (
+          <button className=" p-2 shadow-lg border w-24 bg-slate-100 text-white rounded-lg">
+            <CircularProgress size="1.2rem" />
+          </button>
+        ) : (
+          <button
           className="border shadow-lg p-2 rounded bg-red-500 text-white"
           onClick={() => handleUpdate(product._id)}
         >
           Update
         </button>
+        )}
+
       </Modal>
     </>
   );

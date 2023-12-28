@@ -9,7 +9,7 @@ const Cart = () => {
   const navigate =useNavigate();
   const getuserCart = async () => {
     let token = localStorage.getItem("shoppingtoken");
-    const data = await fetch("http://localhost:8000/getuserCart", {
+    const data = await fetch("https://shopping-backend-vsg9.onrender.com/getuserCart", {
       method: "GET",
       headers: {
         "Access-Control-Allow-Origin": true,

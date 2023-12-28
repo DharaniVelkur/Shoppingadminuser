@@ -1,12 +1,15 @@
+import { CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Card = ({product,getuserCart}) => {
+  const [spin,setSpin] =useState(false);
+  
   const handlecart =async (id)=>{
- 
+    setSpin(true);
     let token = localStorage.getItem('shoppingtoken');
-    const data =await fetch(`http://localhost:8000/addItemToCart`,{
+    const data =await fetch(`https://shopping-backend-vsg9.onrender.com/addItemToCart`,{
       method: 'POST',
       headers:{
         "Access-Control-Allow-Origin": true,
@@ -19,9 +22,11 @@ const Card = ({product,getuserCart}) => {
     });
     const res =await data.json();
     if(data.status===200){
+      setSpin(false)
       toast.success(res.message);
       getuserCart();
     } else{
+      setSpin(false);
       toast.error(res.error);
     }
   }
@@ -35,7 +40,13 @@ const Card = ({product,getuserCart}) => {
           <p className="text-sm font-serif text-gray-500 py-2">{product.description}</p>
           <p className="font-bold text-red-600">₹{product.price}</p>
         </div>
-        <button className={`border rounded shadow-lg p-2 bg-green-300`}  onClick={()=>handlecart(product._id)}>Add To Cart</button>
+        {spin ? (
+          <button className=" p-2 shadow-lg border w-24 bg-slate-100 text-white rounded-lg">
+            <CircularProgress size="1.2rem" />
+          </button>
+        ) : (
+          <button className={`border rounded shadow-lg p-2 bg-green-300`}  onClick={()=>handlecart(product._id)}>Add To Cart</button>
+        )}
         <ToastContainer/>
       </div>
     </>

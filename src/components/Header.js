@@ -6,7 +6,7 @@ const Header = ({count}) => {
 let navigate = useNavigate();
   const handleSignout =async () =>{
     let token = localStorage.getItem('shoppingtoken');
-    const data = await fetch('http://localhost:8000/logout',{
+    const data = await fetch('https://shopping-backend-vsg9.onrender.com/logout',{
       method:"GET",
       headers:{
         'Access-Control-Allow-Origin':true,
